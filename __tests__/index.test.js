@@ -27,10 +27,15 @@ let baseHTML;
 describe('download html file and save it locally', () => {
   beforeAll(async () => {
     nock.disableNetConnect();
-    baseHTML = await readFixture('htmlToDownload.html');
+    try {
+      baseHTML = await readFixture('htmlToDownload.html');
+    } catch (error) {
+      console.log('Cannot load fixture file: htmlToDownload.html');
+      throw new Error(error);
+    }
   });
 
-  beforeEach(async () => {
+  beforeEach(() => {
     mock({
       [customSavePath]: {},
       [defaultSavePath]: {},
@@ -46,17 +51,44 @@ describe('download html file and save it locally', () => {
   });
 
   test('default option', async () => {
-    const returnedFilePath = await pageLoader(pageURL.href);
-    const downloadedHTML = await readFilePromise(returnedFilePath, 'utf-8');
+    let returnedFilePath;
+    let downloadedHTML;
+    try {
+      returnedFilePath = await pageLoader(pageURL.href);
+    } catch (error) {
+      console.log('Cannot execute pageLoader function');
+      throw new Error(error);
+    }
+
+    try {
+      downloadedHTML = await readFilePromise(returnedFilePath, 'utf-8');
+    } catch (error) {
+      console.log('Cannot read saved file');
+      throw new Error(error);
+    }
 
     expect(returnedFilePath).toBe(path.join(defaultSavePath, 'ru-hexlet-io-courses.html'));
     expect(downloadedHTML).toBe(baseHTML);
   });
 
   test('custom option', async () => {
-    const returnedFilePath = await pageLoader(pageURL.href, customSavePath);
+    let returnedFilePath;
+    let downloadedHTML;
+    try {
+      returnedFilePath = await pageLoader(pageURL.href, customSavePath);
+    } catch (error) {
+      console.log('Cannot execute pageLoader function');
+      throw new Error(error);
+    }
+
+    try {
+      downloadedHTML = await readFilePromise(returnedFilePath, 'utf-8');
+    } catch (error) {
+      console.log('Cannot read saved file');
+      throw new Error(error);
+    }
+
     expect(returnedFilePath).toBe(path.join(customSavePath, 'ru-hexlet-io-courses.html'));
-    const downloadedHTML = await readFilePromise(returnedFilePath, 'utf-8');
     expect(downloadedHTML).toBe(baseHTML);
   });
 });
