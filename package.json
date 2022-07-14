@@ -1,0 +1,38 @@
+{
+  "name": "@hexlet/code",
+  "version": "1.0.0",
+  "bin": {
+    "page-loader": "bin/pageLoader.js"
+  },
+  "description": "backend study project #3",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --no-warnings"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fishtriangle/backend-project-lvl3.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fishtriangle/backend-project-lvl3/issues"
+  },
+  "type": "module",
+  "homepage": "https://github.com/fishtriangle/backend-project-lvl3#readme",
+  "devDependencies": {
+    "@jest/globals": "^28.1.2",
+    "eslint": "^8.19.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "jest": "^28.1.2",
+    "jest-cli": "^28.1.2",
+    "mock-fs": "^5.1.2",
+    "nock": "^13.2.8"
+  },
+  "dependencies": {
+    "axios": "^0.27.2",
+    "commander": "^9.3.0",
+    "lodash": "^4.17.21"
+  }
+}
