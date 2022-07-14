@@ -60,7 +60,3 @@ describe('download html file and save it locally', () => {
     expect(downloadedHTML).toBe(baseHTML);
   });
 });
-
-//page-loader --output /mnt/c/repository/backend-project-lvl3/__tests__ https://ya.ru/
-//page-loader https://ya.ru/
-//page-loader --help
