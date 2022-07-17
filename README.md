@@ -13,3 +13,6 @@
 
 ### Example of run page-loader cli:
 [![asciicast](https://asciinema.org/a/MLmwNhA4ymgQcoi4hA7jkEw2L.svg)](https://asciinema.org/a/MLmwNhA4ymgQcoi4hA7jkEw2L)
+
+### Example of downloading page with pictures:
+[![asciicast](https://asciinema.org/a/1R7KCopNNiamKWCbpatrXecPh.svg)](https://asciinema.org/a/1R7KCopNNiamKWCbpatrXecPh)

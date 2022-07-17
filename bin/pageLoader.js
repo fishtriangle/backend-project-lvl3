@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { program } from 'commander';
-import pageLoader from '../src/index.js';
+import loadPage from '../src/index.js';
 
 program
   .description('Page loader utility')
@@ -9,7 +9,7 @@ program
   .argument('<url>')
   .option('-o, --output <dir>', 'output dir', process.cwd())
   .action((url, option) => {
-    pageLoader(url, option.output).then(console.log);
+    loadPage(url, option.output).then(console.log);
   });
 
 program.parse();
