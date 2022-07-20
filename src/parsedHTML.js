@@ -1,5 +1,11 @@
 import { load } from 'cheerio';
 
+const fileTagsAsset = {
+  link: 'href',
+  img: 'src',
+  script: 'src',
+};
+
 class ParsedHTML {
   constructor(htmlStr) {
     this.$ = load(htmlStr);
@@ -9,17 +15,28 @@ class ParsedHTML {
     return this.$.html();
   }
 
-  getImagesSrc() {
+  getFilesSrc() {
     const srcs = [];
-    this.$('img').each((index, tag) => {
-      srcs[index] = this.$(tag).attr('src');
+    Object.keys(fileTagsAsset).forEach((fileTag) => {
+      this.$(fileTag).each((_, tag) => {
+        srcs.push(this.$(tag).attr(fileTagsAsset[fileTag]));
+      });
     });
     return srcs;
   }
 
-  setImagesSrc(newPaths) {
-    const images = this.$('img');
-    images.attr('src', (index, src) => src.replace(src, newPaths[index]));
+  setFilesSrc(newPaths) {
+    let counter = 0;
+    Object.entries(fileTagsAsset).forEach(([fileTag, attribute]) => {
+      this.$(fileTag).attr(attribute, (index, fileSrc) => {
+        if (fileSrc) {
+          const replacedFileSrc = fileSrc.replace(fileSrc, newPaths[counter]);
+          counter += 1;
+          return replacedFileSrc;
+        }
+        return fileSrc;
+      });
+    });
   }
 }
 

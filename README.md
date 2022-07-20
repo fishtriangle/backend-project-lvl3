@@ -16,3 +16,6 @@
 
 ### Example of downloading page with pictures:
 [![asciicast](https://asciinema.org/a/1R7KCopNNiamKWCbpatrXecPh.svg)](https://asciinema.org/a/1R7KCopNNiamKWCbpatrXecPh)
+
+### Example of downloading webpage and files inside it:
+[![asciicast](https://asciinema.org/a/CVdxe052S33cEp0X6kPCD2J1P.svg)](https://asciinema.org/a/CVdxe052S33cEp0X6kPCD2J1P)

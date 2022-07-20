@@ -7,10 +7,11 @@ function isLetterOrFigure(str) {
 }
 
 export const createFileName = (pageLink) => {
-  console.log(pageLink);
-  const protocolLength = pageLink.protocol.length + 2;
-  const fileName = pageLink.href
-    .slice(protocolLength, pageLink.href[pageLink.href.length - 1] !== '/' ? pageLink.href.length : -1)
+  // console.log(pageLink);
+  const url = new URL(pageLink);
+  const protocolLength = url.protocol.length + 2;
+  const fileName = url.href
+    .slice(protocolLength, url.href[url.href.length - 1] !== '/' ? url.href.length : -1)
     .split('')
     .map((symbol) => {
       const changedSymbol = isLetterOrFigure(symbol) ? symbol : '-';
@@ -23,20 +24,20 @@ export const createFileName = (pageLink) => {
 class PageConfig {
   constructor(url, option) {
     this.link = new URL(url);
-    this.folderPath = option;
-    this.fileName = `${createFileName(this.link)}.html`;
-    this.filePath = Path.join(this.folderPath, this.fileName);
+    this.folderPath = Path.resolve(option);
+    this.fileName = `${createFileName(this.getLink())}.html`;
+    this.pagePath = Path.join(this.folderPath, this.fileName);
   }
 
-  getLink = () => this.link;
+  getLink = () => this.link.href;
 
   getFolderPath = () => this.folderPath;
 
   getFileName = () => this.fileName;
 
-  getFilePath = () => this.filePath;
+  getFilePath = () => this.pagePath;
 
-  download = () => axios.get(this.getLink().href).catch(console.log);
+  download = () => axios.get(this.getLink()).catch(console.log);
 
   writeToFile = (html) => writeFile(this.getFilePath(), html);
 }
