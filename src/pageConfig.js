@@ -1,25 +1,12 @@
 import Path from 'path';
 import axios from 'axios';
+import 'axios-debug-log';
 import { writeFile } from 'node:fs/promises';
+import debug from 'debug';
+import createFileName from './util.js';
 
-function isLetterOrFigure(str) {
-  return str.length === 1 && str.match(/[a-z]|\d/i);
-}
-
-export const createFileName = (pageLink) => {
-  // console.log(pageLink);
-  const url = new URL(pageLink);
-  const protocolLength = url.protocol.length + 2;
-  const fileName = url.href
-    .slice(protocolLength, url.href[url.href.length - 1] !== '/' ? url.href.length : -1)
-    .split('')
-    .map((symbol) => {
-      const changedSymbol = isLetterOrFigure(symbol) ? symbol : '-';
-      return changedSymbol;
-    })
-    .join('');
-  return fileName;
-};
+const module = 'page-loader: pageConfig';
+const log = debug(module);
 
 class PageConfig {
   constructor(url, option) {
@@ -39,7 +26,9 @@ class PageConfig {
 
   download = () => axios.get(this.getLink()).catch(console.log);
 
-  writeToFile = (html) => writeFile(this.getFilePath(), html);
+  writeToFile = (html) => writeFile(this.getFilePath(), html)
+    .then(() => log('Successfully saved page to: ', this.getFilePath()))
+    .catch((error) => log('Warning!!! Cannot save page!', '\n', error));
 }
 
 export default PageConfig;

@@ -1,31 +1,37 @@
+import debug from 'debug';
 import ParsedHTML from './parsedHTML.js';
 import PageConfig from './pageConfig.js';
 import FilesConfig from './filesConfig.js';
+
+const app = 'page-loader';
+const log = debug(app);
 
 const loadPage = (url, option = process.cwd()) => {
   let parsedHTML;
   let files;
 
   const page = new PageConfig(url, option);
-  // console.log('Option: ', option, '\n', 'FilePath: ', filePath);
+  log('Target page: ', url, '   ', 'Download path: ', option);
+
   return page.download()
     .then((response) => response.data)
     .then((htmlCode) => {
-      // console.log(htmlCode);
       parsedHTML = new ParsedHTML(htmlCode);
+      log('Sources to download: ', parsedHTML.getFilesSrc());
       files = new FilesConfig(parsedHTML.getFilesSrc(), page);
       return files.download();
     })
-    .catch(() => console.log('WARNING!!! Error in downloading files!'))
+    .catch((error) => log('WARNING!!! Error in downloading files!', '\n', error.message))
     .then(() => {
+      log('Paths of files that should be downloaded: ', files.getSrcsInLocalPage());
       parsedHTML.setFilesSrc(files.getSrcsInLocalPage());
-      // console.log(parsedHTML.toString());
       return page.writeToFile(parsedHTML.toString());
     })
-    .catch(console.log)
-    .then(() => page.getFilePath());
+    .catch((error) => log('WARNING!!! Error in saving changed page!', '\n', error.message))
+    .then(() => {
+      log('End of app\n');
+      return page.getFilePath();
+    });
 };
-
-// console.log(loadPage('https://ya.ru'));
 
 export default loadPage;

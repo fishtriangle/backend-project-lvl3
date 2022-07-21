@@ -1,8 +1,13 @@
 import _ from 'lodash';
 import Path from 'path';
+import debug from 'debug';
 import axios from 'axios';
+import 'axios-debug-log';
 import { writeFile, mkdir } from 'node:fs/promises';
-import { createFileName } from './pageConfig.js';
+import createFileName from './util.js';
+
+const module = 'page-loader: filesConfig';
+const log = debug(module);
 
 class FilesConfig {
   constructor(webSrcs, pageConfig) {
@@ -23,7 +28,6 @@ class FilesConfig {
     const { origin } = new URL(this.pageConfig.getLink());
     const makeLocalSrc = (absoluteWebSrc) => {
       const filesFolderName = `${this.pageConfig.getFileName().slice(0, -5)}_files`;
-      // console.log('AbsWebSrc: ', absoluteWebSrc);
       let type;
       let srcShort;
       if (absoluteWebSrc.match(/.*\/.*\..{1,4}$/)) {
@@ -35,33 +39,25 @@ class FilesConfig {
         srcShort = absoluteWebSrc;
       }
       const fileName = `${createFileName(srcShort)}.${type}`;
-      // console.log('FileName: ', fileName);
       return Path.join(filesFolderName, fileName);
     };
 
     const srcsInLocalPage = webSrcs.map((src) => {
       const absoluteLink = new URL(src, origin);
-      // console.log('Src: ', src);
-      // console.log('Origin', origin);
-      // console.log('Link: ', absoluteLink.href);
       if (absoluteLink.href === src && origin !== absoluteLink.origin) {
         return src;
       }
       this.linksToDownload.push(absoluteLink);
       const localSrc = makeLocalSrc(absoluteLink.href);
-      // console.log('Local src: ', localSrc);
       this.pathsToSave.push(Path.join(this.pageConfig.getFolderPath(), localSrc));
       return localSrc;
     });
-    // console.log('Srcs in local page: ', srcsInLocalPage);
     return srcsInLocalPage;
   }
 
   download() {
-    // console.log('Download links: ', this.getLinksToDownload());
-    // console.log('Download length: ', this.getLinksToDownload().length);
     const promises = this.getLinksToDownload().map((src) => axios.get(src.href, { responseType: 'blob' })
-      .catch(() => console.log(`WARNING!!! ${src.href} cannot download`)));
+      .catch(() => log(`WARNING!!! ${src.href} cannot download`)));
     const promise = Promise.all(promises);
 
     return mkdir(Path.dirname(this.getPathsToSave()[0]), { recursive: true })
@@ -72,23 +68,15 @@ class FilesConfig {
           index,
         ) => {
           if (file) {
-            return writeFile(this.getPathsToSave()[index], file.data)
-              .catch((error) => {
-                console.log(`WARNING!!! ${file.toString()} cannot be saved`);
-                console.log(error);
-              });
+            const data = _.isObject(file.data) ? JSON.stringify(file.data) : file.data;
+            return writeFile(this.getPathsToSave()[index], data)
+              .then(() => log('Successfully saved file', this.getPathsToSave()[index]))
+              .catch((error) => log(`WARNING!!! ${file.data} cannot be saved`, '\n', error));
           }
           return null;
-          // console.log('Save length: ', index, ':  ', files[index].data.length);
-          // console.log(index, ': ', this.getPathsToSave()[index]);
-          // console.log('Save 7: ', files[7]);
-          // console.log('7 : ', this.getPathsToSave()[7]);
         },
       ))
-      .catch((error) => {
-        console.log('WARNING!!! Some files cannot be saved');
-        console.log(error);
-      });
+      .catch((error) => log('WARNING!!! Some files cannot be saved', '\n', error));
   }
 }
 

@@ -83,6 +83,7 @@ let downloadedHtml;
 
 describe('download html file and save it locally', () => {
   beforeAll(async () => {
+    nock.cleanAll();
     nock.disableNetConnect();
     try {
       basePage = await readFixture('htmlToDownload.html');

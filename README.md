@@ -19,3 +19,6 @@
 
 ### Example of downloading webpage and files inside it:
 [![asciicast](https://asciinema.org/a/CVdxe052S33cEp0X6kPCD2J1P.svg)](https://asciinema.org/a/CVdxe052S33cEp0X6kPCD2J1P)
+
+### Example of debug mode:
+[![asciicast](https://asciinema.org/a/kXUyiecK9vHdsxuiriHDHOvXl.svg)](https://asciinema.org/a/kXUyiecK9vHdsxuiriHDHOvXl)
