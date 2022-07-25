@@ -26,7 +26,7 @@ class PageConfig {
 
   download = () => axios.get(this.getLink());
 
-  checkForFolderToSave = () => readdir(this.getFolderPath()).then(console.log);
+  checkForFolderToSave = () => readdir(this.getFolderPath());
 
   writeToFile = (html) => writeFile(this.getFilePath(), html)
     .then(() => log('Successfully saved page to: ', this.getFilePath()));
