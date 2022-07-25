@@ -25,3 +25,6 @@
 
 ### Handling errors tests:
 [![asciicast](https://asciinema.org/a/nAEk1JPCiFCeVGnIzr8OOJrzI.svg)](https://asciinema.org/a/nAEk1JPCiFCeVGnIzr8OOJrzI)
+
+### Page-loader with Listr download notification:
+[![asciicast](https://asciinema.org/a/ZJoTxGME8KeWs2PdITKODHUu5.svg)](https://asciinema.org/a/ZJoTxGME8KeWs2PdITKODHUu5)

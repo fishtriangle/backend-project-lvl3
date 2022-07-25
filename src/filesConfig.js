@@ -4,7 +4,7 @@ import debug from 'debug';
 import axios from 'axios';
 import Listr from 'listr';
 import 'axios-debug-log';
-import {writeFile, mkdir, readdir} from 'node:fs/promises';
+import { writeFile, mkdir } from 'node:fs/promises';
 import createFileName from './util.js';
 
 const module = 'page-loader: filesConfig';
@@ -57,22 +57,6 @@ class FilesConfig {
   }
 
   download() {
-    // const filesToDownload = this.getLinksToDownload().map((src, index) => ({
-    //   title: src.href,
-    //   task: () => axios.get(src.href, { responseType: 'blob' })
-    //     .then((file) => {
-    //       let data = '';
-    //       if (file) {
-    //         data = _.isObject(file.data) ? JSON.stringify(file.data) : file.data;
-    //         console.log('!!!!!FILE: \n', data)
-    //         log(`Save to this path ${this.getPathsToSave()[index]} \n ${data}`);
-    //       }
-    //       return writeFile(this.getPathsToSave()[index], data)
-    //         .then(() => log('Successfully saved file', this.getPathsToSave()[index]))
-    //         .catch((error) => log(error.message));;
-    //     }),
-    // }));
-
     const filesToDownload = this.getLinksToDownload().map((src, index) => ({
       title: src.href,
       task: () => axios.get(src.href, { responseType: 'blob' })
@@ -84,40 +68,15 @@ class FilesConfig {
           }
           return writeFile(this.getPathsToSave()[index], data)
             .then(() => log('Successfully saved file', this.getPathsToSave()[index]))
-            .catch((error) => log(error.message));;
+            .catch((error) => console.error(error.message));
         }),
     }));
 
     const tasks = new Listr(filesToDownload, { concurrent: true, exitOnError: false });
 
     return mkdir(Path.dirname(this.getPathsToSave()[0]), { recursive: true })
-      // .then(() => readdir(this.getPathsToSave()[0]))
-      // .then((dir) => log('!!!!!!!!    ' + dir))
-    .then(() => tasks.run())
-    .catch((error) => log(error.message));
-
-
-    // const promises = this.getLinksToDownload().map((src) => axios.get(src.href, { responseType: 'blob' })
-    //   .catch(() => log(`WARNING!!! ${src.href} cannot download`)));
-    // const promise = Promise.all(promises);
-    //
-    // return mkdir(Path.dirname(this.getPathsToSave()[0]), { recursive: true })
-    //   .then(() => promise)
-    //   .then((files) => files.map(
-    //     (
-    //       file,
-    //       index,
-    //     ) => {
-    //       if (file) {
-    //         const data = _.isObject(file.data) ? JSON.stringify(file.data) : file.data;
-    //         return writeFile(this.getPathsToSave()[index], data)
-    //           .then(() => log('Successfully saved file', this.getPathsToSave()[index]))
-    //           .catch((error) => log(`WARNING!!! ${file.data} cannot be saved`, '\n', error));
-    //       }
-    //       return null;
-    //     },
-    //   ))
-    //   .catch((error) => log('WARNING!!! Some files cannot be saved', '\n', error));
+      .then(() => tasks.run())
+      .catch((error) => log(error.message));
   }
 }
 
