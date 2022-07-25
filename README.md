@@ -22,3 +22,6 @@
 
 ### Example of debug mode:
 [![asciicast](https://asciinema.org/a/kXUyiecK9vHdsxuiriHDHOvXl.svg)](https://asciinema.org/a/kXUyiecK9vHdsxuiriHDHOvXl)
+
+### Handling errors tests:
+[![asciicast](https://asciinema.org/a/nAEk1JPCiFCeVGnIzr8OOJrzI.svg)](https://asciinema.org/a/nAEk1JPCiFCeVGnIzr8OOJrzI)

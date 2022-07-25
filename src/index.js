@@ -13,7 +13,8 @@ const loadPage = (url, option = process.cwd()) => {
   const page = new PageConfig(url, option);
   log('Target page: ', url, '   ', 'Download path: ', option);
 
-  return page.download()
+  return page.checkForFolderToSave()
+    .then(() => page.download())
     .then((response) => response.data)
     .then((htmlCode) => {
       parsedHTML = new ParsedHTML(htmlCode);
@@ -21,16 +22,22 @@ const loadPage = (url, option = process.cwd()) => {
       files = new FilesConfig(parsedHTML.getFilesSrc(), page);
       return files.download();
     })
-    .catch((error) => log('WARNING!!! Error in downloading files!', '\n', error.message))
     .then(() => {
-      log('Paths of files that should be downloaded: ', files.getSrcsInLocalPage());
+      log('Paths of files that were replaced: ', files.getSrcsInLocalPage());
       parsedHTML.setFilesSrc(files.getSrcsInLocalPage());
       return page.writeToFile(parsedHTML.toString());
     })
-    .catch((error) => log('WARNING!!! Error in saving changed page!', '\n', error.message))
     .then(() => {
       log('End of app\n');
       return page.getFilePath();
+    })
+    .catch((error) => {
+      if (error.isAxiosError) {
+        console.error(`WARNING!!! Download error. ${error.message} ${error.code}`);
+      } else if (error.code) {
+        console.error(error.message);
+      }
+      throw error;
     });
 };
 

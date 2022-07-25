@@ -1,7 +1,7 @@
 import Path from 'path';
 import axios from 'axios';
 import 'axios-debug-log';
-import { writeFile } from 'node:fs/promises';
+import { writeFile, readdir } from 'node:fs/promises';
 import debug from 'debug';
 import createFileName from './util.js';
 
@@ -24,11 +24,12 @@ class PageConfig {
 
   getFilePath = () => this.pagePath;
 
-  download = () => axios.get(this.getLink()).catch(console.log);
+  download = () => axios.get(this.getLink());
+
+  checkForFolderToSave = () => readdir(this.getFolderPath()).then(console.log);
 
   writeToFile = (html) => writeFile(this.getFilePath(), html)
-    .then(() => log('Successfully saved page to: ', this.getFilePath()))
-    .catch((error) => log('Warning!!! Cannot save page!', '\n', error));
+    .then(() => log('Successfully saved page to: ', this.getFilePath()));
 }
 
 export default PageConfig;
