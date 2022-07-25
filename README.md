@@ -3,9 +3,9 @@
 
 ### Code working tests and linter status:
 
-[![Maintainability](https://api.codeclimate.com/v1/badges/01c9d998542e2c1b0781/maintainability)](https://codeclimate.com/github/fishtriangle/layout-designer-project-lvl3/maintainability)
+[![Maintainability](https://api.codeclimate.com/v1/badges/b129906520da44735ddf/maintainability)](https://codeclimate.com/github/fishtriangle/backend-project-lvl3/maintainability)
 
-[![Test Coverage](https://api.codeclimate.com/v1/badges/01c9d998542e2c1b0781/test_coverage)](https://codeclimate.com/github/fishtriangle/layout-designer-project-lvl3/test_coverage)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/b129906520da44735ddf/test_coverage)](https://codeclimate.com/github/fishtriangle/backend-project-lvl3/test_coverage)
 
 <hr>
 
