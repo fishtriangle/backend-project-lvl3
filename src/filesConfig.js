@@ -63,12 +63,11 @@ class FilesConfig {
         .then((file) => {
           let data = '';
           if (file) {
-            data = _.isObject(file.data) ? JSON.stringify(file.data) : file.data;
+            data = _.isObject(file.data) ? JSON.stringify(file.data).trim() : file.data.trim();
             log(`Save to this path ${this.getPathsToSave()[index]} \n ${data}`);
           }
           return writeFile(this.getPathsToSave()[index], data)
-            .then(() => log('Successfully saved file', this.getPathsToSave()[index]))
-            .catch((error) => console.error(error.message));
+            .then(() => log('Successfully saved file', this.getPathsToSave()[index]));
         }),
     }));
 
