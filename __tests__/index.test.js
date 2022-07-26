@@ -139,7 +139,7 @@ describe('download html file and save it locally', () => {
     (await promise).forEach((content, index) => {
       testingFiles[typeOfFiles[index]].content = content;
       expect(testingFiles[typeOfFiles[index]].content)
-        .toBe(testingFiles[typeOfFiles[index]].baseContent.trim());
+        .toBe(`${testingFiles[typeOfFiles[index]].baseContent.trim()}\n`);
     });
   });
 });
