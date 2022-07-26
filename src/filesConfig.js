@@ -63,7 +63,7 @@ class FilesConfig {
         .then((file) => {
           let data = '';
           if (file) {
-            data = _.isObject(file.data) ? `${JSON.stringify(file.data)}\n` : `${file.data.trim()}\n`;
+            data = _.isObject(file.data) ? `${JSON.stringify(file.data).trim()}\n` : `${file.data.trim()}\n`;
             log(`Save to this path ${this.getPathsToSave()[index]} \n ${data}`);
           }
           return writeFile(this.getPathsToSave()[index], data)
