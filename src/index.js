@@ -15,12 +15,23 @@ const loadPage = (url, option = process.cwd()) => {
 
   return page.checkForFolderToSave()
     .then(() => page.download())
+    .catch((error) => {
+      throw error;
+    })
     .then((response) => response.data)
     .then((htmlCode) => {
       parsedHTML = new ParsedHTML(htmlCode);
       log('Sources to download: ', parsedHTML.getFilesSrc());
       files = new FilesConfig(parsedHTML.getFilesSrc(), page);
       return files.download();
+    })
+    .catch((error) => {
+      if (error.isAxiosError) {
+        console.error(`WARNING!!! Download error. ${error.message} ${error.code}`);
+      } else if (error.code) {
+        console.error(error.message);
+      }
+      throw error;
     })
     .then(() => {
       log('Paths of files that were replaced: ', files.getSrcsInLocalPage());
@@ -32,11 +43,6 @@ const loadPage = (url, option = process.cwd()) => {
       return page.getFilePath();
     })
     .catch((error) => {
-      if (error.isAxiosError) {
-        console.error(`WARNING!!! Download error. ${error.message} ${error.code}`);
-      } else if (error.code) {
-        console.error(error.message);
-      }
       throw error;
     });
 };

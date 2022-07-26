@@ -67,8 +67,7 @@ class FilesConfig {
             log(`Save to this path ${this.getPathsToSave()[index]} \n ${data}`);
           }
           return writeFile(this.getPathsToSave()[index], data)
-            .then(() => log('Successfully saved file', this.getPathsToSave()[index]))
-            .catch((error) => console.error(error.message));
+            .then(() => log('Successfully saved file', this.getPathsToSave()[index]));
         }),
     }));
 

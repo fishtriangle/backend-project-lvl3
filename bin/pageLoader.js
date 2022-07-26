@@ -9,7 +9,12 @@ program
   .argument('<url>')
   .option('-o, --output <dir>', 'output dir', process.cwd())
   .action((url, option) => {
-    loadPage(url, option.output).then(console.log);
+    loadPage(url, option.output)
+      .then(console.log)
+      .catch((error) => {
+        console.error(error.message);
+        process.exit(1);
+      });
   });
 
 program.parse();
