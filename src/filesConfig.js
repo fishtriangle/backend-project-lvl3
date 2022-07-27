@@ -59,13 +59,10 @@ class FilesConfig {
   download() {
     const filesToDownload = this.getLinksToDownload().map((src, index) => ({
       title: src.href,
-      task: () => axios.get(src.href, { responseType: 'blob' })
-        .then((file) => {
-          let data = '';
-          if (file) {
-            data = _.isObject(file.data) ? `${JSON.stringify(file.data).trim()}\n` : `${file.data.trim()}\n`;
-            log(`Save to this path ${this.getPathsToSave()[index]} \n ${data}`);
-          }
+      task: () => axios.get(src.href, { responseType: 'stream' })
+        .then((response) => {
+          const { data } = response;
+          log(`Save to this path ${this.getPathsToSave()[index]} \n ${data}`);
           return writeFile(this.getPathsToSave()[index], data)
             .then(() => log('Successfully saved file', this.getPathsToSave()[index]));
         }),
