@@ -16,20 +16,34 @@ class PageConfig {
     this.pagePath = Path.join(this.folderPath, this.fileName);
   }
 
-  getLink = () => this.link.href;
+  getLink() {
+    return this.link.href;
+  }
 
-  getFolderPath = () => this.folderPath;
+  getFolderPath() {
+    return this.folderPath;
+  }
 
-  getFileName = () => this.fileName;
+  getFileName() {
+    return this.fileName;
+  }
 
-  getFilePath = () => this.pagePath;
+  getFilePath() {
+    return this.pagePath;
+  }
 
-  download = () => axios.get(this.getLink());
+  download() {
+    return axios.get(this.getLink());
+  }
 
-  checkForFolderToSave = () => readdir(this.getFolderPath());
+  checkForFolderToSave() {
+    return readdir(this.getFolderPath());
+  }
 
-  writeToFile = (html) => writeFile(this.getFilePath(), html)
-    .then(() => log('Successfully saved page to: ', this.getFilePath()));
+  writeToFile(html) {
+    return writeFile(this.getFilePath(), html)
+      .then(() => log('Successfully saved page to: ', this.getFilePath()));
+  }
 }
 
 export default PageConfig;

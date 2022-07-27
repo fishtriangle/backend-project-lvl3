@@ -19,11 +19,17 @@ class FilesConfig {
     this.srcsInLocalPage = this.makeLinks(this.webSrcs);
   }
 
-  getLinksToDownload = () => this.linksToDownload;
+  getLinksToDownload() {
+    return this.linksToDownload;
+  }
 
-  getSrcsInLocalPage = () => this.srcsInLocalPage;
+  getSrcsInLocalPage() {
+    return this.srcsInLocalPage;
+  }
 
-  getPathsToSave = () => this.pathsToSave;
+  getPathsToSave() {
+    return this.pathsToSave;
+  }
 
   makeLinks(webSrcs) {
     const { origin } = new URL(this.pageConfig.getLink());

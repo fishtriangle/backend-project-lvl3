@@ -35,36 +35,6 @@ const testModes = [
 
 const pageURL = new URL('https://ru.hexlet.io/courses');
 
-const page = {
-  basePage: {
-
-    url: /\/courses/,
-    content: await readFixture('htmlToDownload.html'),
-  },
-  downloadedPage: {
-    content: null,
-    baseContent: await readFixture('htmlAfterDownload.html'),
-  },
-};
-
-const testingFiles = {
-  img: {
-    url: /\/assets\/professions\/nodejs\.png/,
-    filepath: path.join('ru-hexlet-io-courses_files', 'ru-hexlet-io-assets-professions-nodejs.png'),
-    baseContent: await readFixture('assets/nodejs.png'),
-  },
-  css: {
-    url: /\/assets\/application\.css/,
-    filepath: path.join('ru-hexlet-io-courses_files', 'ru-hexlet-io-assets-application.css'),
-    baseContent: await readFixture('assets/application.css'),
-  },
-  js: {
-    url: /\/packs\/js\/runtime\.js/,
-    filepath: path.join('ru-hexlet-io-courses_files', 'ru-hexlet-io-packs-js-runtime.js'),
-    baseContent: await readFixture('assets/runtime.js'),
-  },
-};
-
 const networkErrors = [
   ['Error: 400 - Bad Request', 400],
   ['Error: 403 - Forbidden', 403],
@@ -74,10 +44,43 @@ const networkErrors = [
   ['Error: 503 - Service Unavailable', 503],
 ];
 
+let page;
+let testingFiles;
+
 describe('download html file and save it locally', () => {
-  beforeAll(() => {
+  beforeAll(async () => {
     nock.cleanAll();
     nock.disableNetConnect();
+
+    page = {
+      basePage: {
+
+        url: /\/courses/,
+        content: await readFixture('htmlToDownload.html'),
+      },
+      downloadedPage: {
+        content: null,
+        baseContent: await readFixture('htmlAfterDownload.html'),
+      },
+    };
+
+    testingFiles = {
+      img: {
+        url: /\/assets\/professions\/nodejs\.png/,
+        filepath: path.join('ru-hexlet-io-courses_files', 'ru-hexlet-io-assets-professions-nodejs.png'),
+        baseContent: await readFixture('assets/nodejs.png'),
+      },
+      css: {
+        url: /\/assets\/application\.css/,
+        filepath: path.join('ru-hexlet-io-courses_files', 'ru-hexlet-io-assets-application.css'),
+        baseContent: await readFixture('assets/application.css'),
+      },
+      js: {
+        url: /\/packs\/js\/runtime\.js/,
+        filepath: path.join('ru-hexlet-io-courses_files', 'ru-hexlet-io-packs-js-runtime.js'),
+        baseContent: await readFixture('assets/runtime.js'),
+      },
+    };
   });
 
   beforeEach(() => {
