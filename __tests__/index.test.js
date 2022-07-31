@@ -22,18 +22,20 @@ const getFixturePath = (filename) => path.join(__dirname, '..', '__fixtures__', 
 const readFixture = (filename) => readFilePromise(getFixturePath(filename), 'utf-8');
 const readFile = (filepath) => readFilePromise(filepath, 'utf-8');
 
+const pageURL = new URL('https://ru.hexlet.io/courses');
+
 const testModes = [
   {
     name: 'defaultSavePath',
-    option: process.cwd(),
+    pathToSave: process.cwd(),
+    testingArgs: [pageURL.href],
   },
   {
     name: 'customSavePath',
-    option: path.join(__dirname, '/var/tmp'),
+    pathToSave: path.join(__dirname, '/var/tmp'),
+    testingArgs: [pageURL.href, path.join(__dirname, '/var/tmp')],
   },
 ];
-
-const pageURL = new URL('https://ru.hexlet.io/courses');
 
 const networkErrors = [
   ['Error: 400 - Bad Request', 400],
@@ -84,9 +86,9 @@ describe('download html file and save it locally', () => {
   });
 
   beforeEach(() => {
-    testModes.forEach(({ option }) => {
+    testModes.forEach(({ pathToSave }) => {
       mock({
-        [option]: {},
+        [pathToSave]: {},
       });
     });
 
@@ -106,22 +108,13 @@ describe('download html file and save it locally', () => {
     mock.restore();
   });
 
-  test.each(testModes)('Save page and files with $name', async ({ name, option }) => {
+  test.each(testModes)('Save page and files with $name', async ({ pathToSave, testingArgs }) => {
     mock({
-      [option]: {},
+      [pathToSave]: {},
       [path.resolve(__dirname, '../node_modules')]: mock.load(path.resolve(__dirname, '../node_modules')),
     });
 
-    try {
-      if (name === 'defaultSavePath') {
-        page.downloadedPage.path = await loadPage(pageURL.href);
-      } else {
-        page.downloadedPage.path = await loadPage(pageURL.href, option);
-      }
-    } catch (error) {
-      console.log('Cannot execute loadPage function');
-      throw new Error(error);
-    }
+    page.downloadedPage.path = await loadPage(...testingArgs);
 
     try {
       page.downloadedPage.content = await readFile(page.downloadedPage.path);
@@ -130,14 +123,14 @@ describe('download html file and save it locally', () => {
       throw new Error(error);
     }
 
-    expect(page.downloadedPage.path).toBe(path.join(option, 'ru-hexlet-io-courses.html'));
+    expect(page.downloadedPage.path).toBe(path.join(pathToSave, 'ru-hexlet-io-courses.html'));
     expect(minify(page.downloadedPage.content, minifyConfig))
       .toBe(minify(page.downloadedPage.baseContent, minifyConfig));
 
     const typeOfFiles = Object.keys(testingFiles);
 
     const promise = Promise.all(typeOfFiles
-      .map((filetype) => readFile(path.join(option, testingFiles[filetype].filepath))));
+      .map((filetype) => readFile(path.join(pathToSave, testingFiles[filetype].filepath))));
 
     (await promise).forEach((content, index) => {
       testingFiles[typeOfFiles[index]].content = content;
