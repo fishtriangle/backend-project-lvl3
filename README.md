@@ -1,3 +1,5 @@
+<h1>Backend project level 3 (Load webpage on local storage)</h1>
+
 ### Hexlet tests and linter status:
 [![Actions Status](https://github.com/fishtriangle/backend-project-lvl3/workflows/hexlet-check/badge.svg)](https://github.com/fishtriangle/backend-project-lvl3/actions)
 
@@ -28,3 +30,72 @@
 
 ### Page-loader with Listr download notification:
 [![asciicast](https://asciinema.org/a/ZJoTxGME8KeWs2PdITKODHUu5.svg)](https://asciinema.org/a/ZJoTxGME8KeWs2PdITKODHUu5)
+
+
+## Description
+Third studying project created with node.js and makefile.
+Download webpage on local storage and all additional files like: scripts, images, stylesheets.
+Options: select webpage, select place to save.
+
+## Requirements
+<ul>
+<li>Node.js</li>
+<li>Makefile</li>
+</ul>
+
+## Installation
+In project folder.
+To install environment:
+```
+make install
+```
+To check is package correct:
+```
+make publish
+```
+
+To create local link:
+```
+npm link
+```
+
+## CLI-use
+After installation:
+```
+page-loader https://page.to.download 
+```
+
+<br>
+Options:
+
+```
+Usage: page-loader [options] <url>
+
+Options:
+
+-V, --version       output the version number                                                                                                                         
+-o, --output <dir>  output dir (default: "/mnt/c/repository/backend-project-lvl3")                                                                                  
+-h, --help          display help for command
+
+```
+
+## Additional scripts
+Linter script:
+```
+make lint
+```
+
+Run tests:
+```
+make test
+```
+
+Run tests coverage:
+```
+make test-coverage
+```
+
+Run in debug mode:
+```
+make debug
+```
